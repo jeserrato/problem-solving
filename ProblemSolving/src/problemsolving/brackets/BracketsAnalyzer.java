@@ -17,6 +17,12 @@ public class BracketsAnalyzer {
         stack = new BracketStack();
     }
     
+    public void areSyntacticallyCorrect(String[] stringsToAnalyze) throws Exception {
+        for (String stringToAnalyze: stringsToAnalyze) {
+            System.out.println(isSyntacticallyCorrect(stringToAnalyze));
+        }
+    }
+    
     public boolean isSyntacticallyCorrect(String stringToAnalyze) throws Exception {
         if (stringToAnalyze == null || stringToAnalyze.length() <= 1)
             return false;

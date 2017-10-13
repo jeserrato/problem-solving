@@ -51,6 +51,25 @@ public class Brackets {
         s = "()))))))(";
         result = new BracketsAnalyzer().isSyntacticallyCorrect(s);
         System.out.println(s + " is syncatically " + (result ? "correct" : "incorrect"));
+        
+        String[] input = new String[] {
+            "{{{{{{{{{}}}}}}",
+            "{[()]}",
+            "{()[]}{{{()}}}()[{}()]",
+            "{]",
+            "({]})",
+            ")",
+            ")))))))(",
+            "()))))))("
+        };
+        
+        BracketsAnalyzer analyzer = new BracketsAnalyzer();
+        
+        long start = System.nanoTime();
+        analyzer.areSyntacticallyCorrect(input);
+        long time = System.nanoTime() - start;
+        
+        System.out.println("Time in miliseconds: " + time);
     }
     
 }

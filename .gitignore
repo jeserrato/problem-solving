@@ -27,3 +27,7 @@ hs_err_pid*
 /ProblemSolving/manifest.mf
 /ProblemSolving/build.xml
 /ProblemSolving/build/
+
+# Intellij IDEA #
+.idea
+*.iml

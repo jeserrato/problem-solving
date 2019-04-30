@@ -1,0 +1,71 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { Directions } from "@shared/enums";
+
+/**
+ * Splits an array in n subarrays.
+ *
+ * It splits an array in n parts (it returns an array of arrays) you cand decide the preference of the elements,
+ * this means that if the length of the array to be split is odd, the remaining element will be assigned to the first
+ * subarrays, or the last subarrays depending on the direction you choose: LEFT to have surplus elements in the first
+ * subarrays, RIGHT to have them in the last subarrays. For example.
+ *
+ * [100] -> [[100]]
+ * [1,2,3], 2, RIGHT -> [[1],[2,3]]
+ * [1,2,3,4,5,6,7], 3, LEFT -> [[1,2,3],[4,5],[6,7]]
+ * [1,2,3,4,5,6,7,8,9,10,11,12,13,14], 4 -> [[1,2,3],[4,5,6],[7,8,9,10],[11,12,13,14]]
+ * [1,2,3,4,5], 10, LEFT -> [[1],[2],[3],[4],[5]]
+ *
+ * Please take a look at the corresponding spec file for more examples.
+ */
+@Pipe({
+  name: 'split'
+})
+export class SplitArrayPipe implements PipeTransform {
+
+  transform<T>(array: T[], n: number = 2, direction: Directions = Directions.RIGHT): T[][] {
+    let arrays: T[][] = [];
+
+    if (array && array.length) {
+      if (array.length === 1) {
+        arrays[0] = array;
+      } else if (n >= array.length) {
+        array.forEach((element, index) => arrays[index] = [element]);
+      } else {
+        arrays = this.splitArray(array, n, direction);
+      }
+
+      return arrays;
+    }
+
+    return [];
+  }
+
+  private splitArray<T>(array: T[], n: number, direction: Directions): T[][] {
+    const surplus: number = array.length % n;
+    const subArraysSize: number = (array.length - surplus) / n;
+    const arrays: T[][] = [];
+
+    let subarraySizes = new Array<number>(n);
+    subarraySizes.fill(subArraysSize);
+
+    for (let i = 0; i < surplus; i++) {
+      subarraySizes[i]++;
+    }
+
+    if (direction === Directions.RIGHT) {
+      subarraySizes = subarraySizes.reverse();
+    }
+
+    let start = 0;
+    let end = 0;
+
+    subarraySizes.forEach(element => {
+      end += element;
+      arrays.push(array.slice(start, end));
+      start = end;
+    });
+
+    return arrays;
+  }
+
+}

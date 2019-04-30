@@ -1,0 +1,41 @@
+import { SplitArrayPipe } from '@shared/pipes/splitArray.pipe';
+import { Directions } from "@shared/enums";
+
+describe('SplitArrayPipe', () => {
+  let pipe: SplitArrayPipe;
+
+  beforeEach(() => {
+    pipe = new SplitArrayPipe();
+  });
+
+  it('splits the input array in a correct manner', () => {
+    expect(pipe.transform(null)).toEqual([]);
+    expect(pipe.transform(undefined)).toEqual([]);
+    expect(pipe.transform([])).toEqual([]);
+    expect(pipe.transform([1])).toEqual([[1]]);
+    expect(pipe.transform([1, 2, 3])).toEqual([[1], [2, 3]]);
+    expect(pipe.transform([1, 2, 3, 4])).toEqual([[1, 2], [3, 4]]);
+    expect(pipe.transform([1, 2, 3, 4, 5, 6])).toEqual([[1, 2, 3], [4, 5, 6]]);
+    expect(pipe.transform(['a', 'b', 'c', 'd', 'e', 'f'])).toEqual([['a', 'b', 'c'], ['d', 'e', 'f']]);
+    expect(pipe.transform(['a', 'b', 'c', 'd', 'e'])).toEqual([['a', 'b'], ['c', 'd', 'e']]);
+  });
+
+  it('splits the input array in a correct manner n', () => {
+      expect(pipe.transform(null)).toEqual([]);
+      expect(pipe.transform(undefined)).toEqual([]);
+      expect(pipe.transform([])).toEqual([]);
+      expect(pipe.transform([1])).toEqual([[1]]);
+      expect(pipe.transform([1, 2, 3, 4, 5], 7)).toEqual([[1], [2], [3], [4], [5]]);
+      expect(pipe.transform([1, 2, 3, 4, 5], 7, Directions.LEFT)).toEqual([[1], [2], [3], [4], [5]]);
+      expect(pipe.transform([1, 2, 3, 4, 5], 5)).toEqual([[1], [2], [3], [4], [5]]);
+      expect(pipe.transform([1, 2, 3, 4, 5], 5, Directions.LEFT)).toEqual([[1], [2], [3], [4], [5]]);
+      expect(pipe.transform(['a', 'b', 'c', 'd', 'e', 'f'], 5)).toEqual([['a'], ['b'], ['c'], ['d'], ['e', 'f']]);
+      expect(pipe.transform(['a', 'b', 'c', 'd', 'e', 'f'], 5, Directions.LEFT)).toEqual([['a', 'b'], ['c'], ['d'], ['e'], ['f']]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, Directions.LEFT)).toEqual([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, Directions.RIGHT)).toEqual([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 5, Directions.LEFT)).toEqual([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11], [12, 13]]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 5, Directions.RIGHT)).toEqual([[1, 2], [3, 4], [5, 6, 7], [8, 9, 10], [11, 12, 13]]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 3, Directions.LEFT)).toEqual([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11], [12, 13, 14, 15, 16]]);
+      expect(pipe.transform([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 3, Directions.RIGHT)).toEqual([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16]]);
+  });
+});
